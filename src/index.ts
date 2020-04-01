@@ -8,7 +8,7 @@ createConnection("default").then(connection => {
   const app = express()
   app.set('view engine', 'ejs')
   app.set('views', __dirname + "/../public/views")
-  app.use("/assets", express.static(__dirname + "../public/assets"))
+  app.use("/assets", express.static(__dirname + "/../public/assets"))
   app.use(express.json())
 
   const apiRouter = express.Router();
