@@ -1,0 +1,9 @@
+{
+  "type": "mongodb",
+  "host": "localhost",
+  "port": 27017,
+  "database": "express-example",
+  "entities": ["dist/entity/*.js"],
+  "logging": true,
+  "synchronize": true
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= siteName %></title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script src="https://checkout.stripe.com/checkout.js" defer></script>
+    <script>
+      var stripePublicKey = '<%= stripePublicKey %>';
+      var cart = [];
+      function updateCart(e, index) {
+        if(cart[index]) cart[index].price = e.target.value;
+      }
+    </script>
+  </head>
+  <body>
+    <%- include("./components/header") %>
+    <section class="container content-section">
+      <h2 class="section-header">PRODUCTS</h2>
+      <div id="shop-items">
+        <% products.forEach(product => { %>
+        <div class="shop-item" data-product-id="<%= product.id %>">
+          <div class="shop-item-title">
+            <%= product.name %>
+          </div>
+          <img src="<%= product.img %>" alt="" class="shop-item-image" />
+          <div class="shop-item-details">
+            <span class="shop-item-min-price">Minimum: $<%= product.minPrice / 100 %></span>
+            
+            <script>
+              var b = document.createElement(`button`);
+              b.classList = [
+                "button",
+                "button-primary"
+              ];
+              b.innerText = "Add to Cart";
+              b.onclick = () => {
+                cart[`<%= product.id %>`] = {
+                  name: `<%= product.name %>`,
+                  id: `<%= product.id %>`,
+                  maxPrice: `<%= product.maxPrice %>`,
+                  minPrice: `<%= product.minPrice %>`,
+                  price: 0,
+                }
+                document.getElementById('cart').innerHTML += 
+                `
+                <div class="cart-item">
+                  <h3><%= product.name %></h3>
+                  <label>Price: </label>
+                  <input type="text" oninput="changeCart(this, <%=product.id%>);" placeholder="<%= product.minPrice %>">
+                  </div>a
+                `;
+              }
+            </script>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </section>
+    <form id="purchase-form">
+      <div class="cart">
+        
+      </div>
+      <input class="button button-primary" type="submit">Purchase</button>
+    </form>
+    <script>
+      document.getElementById('cart').innerHTML = ``;
+      
+      document.getElementById('purchase-form').onsubmit = (event) => {
+        event.preventDefault();
+      }
+      var stripeHandler = StripeCheckout.configure({
+        key: stripePublicKey,
+        locale: 'en',
+        token: (token) => {
+          fetch('/api/purchase', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              stripeTokenId: token.id,
+              products: cart
+            })
+          }).then((res) => {
+            return res.json()
+          }).then((data) => {
+            alert(data.message)
+          }).catch(err => console.error(err));
+        }
+      })
+    </script>
+  </body>
+</html>

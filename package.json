@@ -1,0 +1,28 @@
+{
+  "name": "fullstack-app-example",
+  "version": "1.0.0",
+  "description": "Created with TypeOrm, Typescript, MongoDB, and ",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "start": "npm run build && node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node-fetch": "^2.5.5",
+    "@types/stripe": "^7.13.22",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.5",
+    "node-fetch": "^2.6.0",
+    "reflect-metadata": "^0.1.13",
+    "stripe": "^8.38.0",
+    "typeorm": "^0.2.24"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "typescript": "^3.8.3"
+  }
+}
